@@ -1,5 +1,5 @@
 const tintOptions = [
-  { id: "off", label: "Off", color: "#666" },
+  { id: "off", label: "Off", color: "#333" },
   { id: "warm", label: "Peach", color: "#FFE4B5" },
   { id: "yellow", label: "Yellow", color: "#FFFF96" },
   { id: "blue", label: "Blue", color: "#ADD8E6" },
@@ -11,18 +11,20 @@ function Toggle({ label, checked, onChange }) {
   return (
     <label className="flex items-center gap-2 cursor-pointer group">
       <div
-        className={`w-8 h-4 rounded-full transition-colors relative ${
-          checked ? "bg-flame" : "bg-neutral-700"
+        className={`w-7 h-3.5 rounded-sm transition-colors duration-150 relative ${
+          checked ? "bg-accent" : "bg-border-default"
         }`}
         onClick={onChange}
+        style={{ borderRadius: "2px" }}
       >
         <div
-          className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${
-            checked ? "translate-x-[18px]" : "translate-x-[2px]"
+          className={`absolute top-[2px] w-2.5 h-2.5 bg-text-primary transition-transform duration-150 ${
+            checked ? "translate-x-[14px]" : "translate-x-[2px]"
           }`}
+          style={{ borderRadius: "1px" }}
         />
       </div>
-      <span className="text-xs text-neutral-300 group-hover:text-neutral-100 transition-colors select-none">
+      <span className="text-[11px] font-mono text-text-secondary group-hover:text-text-primary transition-colors duration-150 select-none">
         {label}
       </span>
     </label>
@@ -40,15 +42,18 @@ export default function OverlayControls({
   setFocusStrip,
 }) {
   return (
-    <div className="absolute bottom-4 left-4 z-30 bg-neutral-900/95 backdrop-blur-sm border border-neutral-700 rounded-xl p-4 w-56 shadow-2xl">
-      <p className="text-xs font-semibold text-neutral-300 mb-3 flex items-center gap-1.5">
-        <span>🧠</span> Accessibility Overlays
+    <div
+      className="absolute bottom-3 left-3 z-30 bg-bg-deep/95 backdrop-blur-sm border border-border-default p-3 w-52 shadow-2xl"
+      style={{ borderRadius: "2px" }}
+    >
+      <p className="text-[10px] font-mono font-bold text-text-secondary uppercase tracking-[0.15em] mb-3">
+        A11Y OVERLAYS
       </p>
 
       <div className="space-y-3">
         <div>
-          <p className="text-[10px] text-neutral-500 uppercase tracking-wider mb-1.5">
-            Colour Tint
+          <p className="text-[9px] text-text-tertiary uppercase tracking-[0.15em] font-mono mb-1.5">
+            COLOUR TINT
           </p>
           <div className="flex gap-1.5">
             {tintOptions.map((t) => (
@@ -56,17 +61,18 @@ export default function OverlayControls({
                 key={t.id}
                 onClick={() => setTint(t.id)}
                 title={t.label}
-                className={`w-6 h-6 rounded-full border-2 transition-all cursor-pointer ${
+                className={`w-5 h-5 border transition-all duration-150 cursor-pointer ${
                   tint === t.id
-                    ? "border-flame scale-110 shadow-lg"
-                    : "border-neutral-600 hover:border-neutral-400"
+                    ? "border-accent scale-110"
+                    : "border-border-subtle hover:border-border-default"
                 }`}
                 style={{
-                  backgroundColor: t.id === "off" ? "#333" : t.color,
+                  backgroundColor: t.color,
+                  borderRadius: "1px",
                 }}
               >
                 {t.id === "off" && (
-                  <span className="text-neutral-500 text-[10px] flex items-center justify-center">
+                  <span className="text-text-tertiary text-[8px] flex items-center justify-center">
                     ✕
                   </span>
                 )}
@@ -77,8 +83,8 @@ export default function OverlayControls({
 
         {tint !== "off" && (
           <div>
-            <p className="text-[10px] text-neutral-500 uppercase tracking-wider mb-1">
-              Opacity: {opacity}%
+            <p className="text-[9px] text-text-tertiary uppercase tracking-[0.15em] font-mono mb-1">
+              OPACITY {opacity}%
             </p>
             <input
               type="range"
@@ -86,22 +92,14 @@ export default function OverlayControls({
               max="40"
               value={opacity}
               onChange={(e) => setOpacity(Number(e.target.value))}
-              className="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-flame"
+              className="w-full h-[2px] bg-border-subtle appearance-none cursor-pointer accent-accent"
             />
           </div>
         )}
 
-        <div className="space-y-2 pt-1 border-t border-neutral-800">
-          <Toggle
-            label="📏 Reading ruler"
-            checked={ruler}
-            onChange={() => setRuler(!ruler)}
-          />
-          <Toggle
-            label="🔦 Focus strip"
-            checked={focusStrip}
-            onChange={() => setFocusStrip(!focusStrip)}
-          />
+        <div className="space-y-2 pt-2 border-t border-border-subtle">
+          <Toggle label="Reading ruler" checked={ruler} onChange={() => setRuler(!ruler)} />
+          <Toggle label="Focus strip" checked={focusStrip} onChange={() => setFocusStrip(!focusStrip)} />
         </div>
       </div>
     </div>

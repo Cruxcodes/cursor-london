@@ -23,9 +23,9 @@ export default function ReadabilityPreview({ text, dyslexiaReport }) {
   };
 
   const modes = [
-    { id: "original", label: "Original", icon: "📄" },
-    { id: "optimized", label: "Dyslexia-Friendly", icon: "🧠" },
-    { id: "compare", label: "Side by Side", icon: "⚡" },
+    { id: "original", label: "ORIGINAL" },
+    { id: "optimized", label: "DYSLEXIA-FRIENDLY" },
+    { id: "compare", label: "SIDE BY SIDE" },
   ];
 
   const bgTints = {
@@ -34,13 +34,13 @@ export default function ReadabilityPreview({ text, dyslexiaReport }) {
   };
 
   return (
-    <div className="bg-surface rounded-xl border border-neutral-800 overflow-hidden">
-      <div className="px-4 py-3 border-b border-neutral-800 flex items-center justify-between">
+    <div className="border border-border-subtle" style={{ borderRadius: "1px" }}>
+      <div className="px-4 py-3 border-b border-border-subtle flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-neutral-200">
-            Readability Preview
+          <h3 className="text-[11px] font-mono font-bold uppercase tracking-[0.15em] text-text-secondary">
+            READABILITY PREVIEW
           </h3>
-          <p className="text-xs text-neutral-500 mt-0.5">
+          <p className="text-[11px] text-text-tertiary font-mono mt-0.5">
             See your site's text through different eyes
           </p>
         </div>
@@ -49,13 +49,14 @@ export default function ReadabilityPreview({ text, dyslexiaReport }) {
             <button
               key={m.id}
               onClick={() => setMode(m.id)}
-              className={`px-3 py-1.5 text-xs rounded-lg transition-colors cursor-pointer ${
+              className={`px-3 py-1 text-[10px] font-mono uppercase tracking-[0.1em] transition-colors duration-150 cursor-pointer ${
                 mode === m.id
-                  ? "bg-flame text-white"
-                  : "bg-neutral-800 text-neutral-400 hover:text-neutral-200"
+                  ? "bg-accent text-black font-bold"
+                  : "text-text-tertiary hover:text-text-secondary"
               }`}
+              style={{ borderRadius: "2px" }}
             >
-              {m.icon} {m.label}
+              {m.label}
             </button>
           ))}
         </div>
@@ -65,31 +66,23 @@ export default function ReadabilityPreview({ text, dyslexiaReport }) {
         {mode === "compare" ? (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs text-neutral-500 mb-2 text-center font-semibold">
-                Original
+              <p className="text-[10px] text-text-tertiary font-mono uppercase tracking-[0.15em] mb-2">
+                ORIGINAL
               </p>
               <div
-                className="rounded-lg p-6 text-neutral-800"
-                style={{
-                  ...originalStyles,
-                  backgroundColor: bgTints.original,
-                  color: "#000",
-                }}
+                className="p-5 text-neutral-800"
+                style={{ ...originalStyles, backgroundColor: bgTints.original, color: "#000", borderRadius: "1px" }}
               >
                 {text}
               </div>
             </div>
             <div>
-              <p className="text-xs text-neutral-500 mb-2 text-center font-semibold">
-                Dyslexia-Friendly
+              <p className="text-[10px] text-text-tertiary font-mono uppercase tracking-[0.15em] mb-2">
+                DYSLEXIA-FRIENDLY
               </p>
               <div
-                className="rounded-lg p-6"
-                style={{
-                  ...optimizedStyles,
-                  backgroundColor: bgTints.optimized,
-                  color: "#333",
-                }}
+                className="p-5"
+                style={{ ...optimizedStyles, backgroundColor: bgTints.optimized, color: "#333", borderRadius: "1px" }}
               >
                 {text}
               </div>
@@ -97,12 +90,12 @@ export default function ReadabilityPreview({ text, dyslexiaReport }) {
           </div>
         ) : (
           <div
-            className="rounded-lg p-6 transition-all duration-300"
+            className="p-5 transition-all duration-300"
             style={{
               ...(mode === "optimized" ? optimizedStyles : originalStyles),
-              backgroundColor:
-                mode === "optimized" ? bgTints.optimized : bgTints.original,
+              backgroundColor: mode === "optimized" ? bgTints.optimized : bgTints.original,
               color: mode === "optimized" ? "#333" : "#000",
+              borderRadius: "1px",
             }}
           >
             {text}
@@ -110,10 +103,9 @@ export default function ReadabilityPreview({ text, dyslexiaReport }) {
         )}
 
         {dyslexiaReport?.top_recommendation && (
-          <div className="mt-4 bg-flame/5 border border-flame/20 rounded-lg p-3 flex items-start gap-2">
-            <span className="text-flame text-sm">💡</span>
-            <p className="text-xs text-neutral-400">
-              <span className="text-flame font-semibold">Pro tip:</span>{" "}
+          <div className="mt-4 border-l-[3px] border-accent bg-accent-glow px-3 py-2">
+            <p className="text-[12px] text-text-secondary font-mono">
+              <span className="text-text-accent font-bold">TIP: </span>
               {dyslexiaReport.top_recommendation}
             </p>
           </div>

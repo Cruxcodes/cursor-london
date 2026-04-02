@@ -1,17 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
-
-  --color-flame: #f97316;
-  --color-flame-dark: #ea580c;
-  --color-surface: #141414;
-  --color-surface-light: #1e1e1e;
-  --color-surface-lighter: #282828;
-  --color-bg: #0a0a0a;
-}
-
 @font-face {
   font-family: 'OpenDyslexic';
   src: url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/open-dyslexic-regular.woff2') format('woff2');
@@ -20,31 +8,88 @@
   font-display: swap;
 }
 
+@theme {
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-serif: 'Instrument Serif', 'Playfair Display', Georgia, serif;
+
+  --color-bg-deep: #050505;
+  --color-bg-base: #0c0c0c;
+  --color-bg-surface: #141210;
+  --color-bg-surface-hover: #1c1916;
+  --color-bg-elevated: #1e1b18;
+
+  --color-border-subtle: #1e1b17;
+  --color-border-default: #2a2520;
+  --color-border-focus: #f97316;
+
+  --color-text-primary: #e8e0d6;
+  --color-text-secondary: #7a7068;
+  --color-text-tertiary: #4a4440;
+  --color-text-accent: #f97316;
+
+  --color-accent: #f97316;
+  --color-accent-hover: #fb923c;
+  --color-accent-glow: rgba(249, 115, 22, 0.08);
+
+  --color-severity-critical: #ef4444;
+  --color-severity-warning: #f59e0b;
+  --color-severity-info: #6b9fff;
+  --color-severity-safe: #4ade80;
+}
+
 body {
-  background-color: #0a0a0a;
-  color: #e5e5e5;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+
+::selection {
+  background: rgba(249, 115, 22, 0.3);
+  color: var(--color-text-primary);
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #141414;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: var(--color-bg-elevated);
+  border-radius: 1px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #2a2520;
 }
 
+/* Background atmosphere */
+#root {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(249, 115, 22, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #0c0c0c 0%, #050505 100%);
+  position: relative;
+}
+
+#root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Page load animation */
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;
@@ -53,21 +98,25 @@ body {
 }
 
 .animate-in {
-  animation: fade-in-up 0.4s ease-out;
+  animation: fade-in-up 400ms ease-out;
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+.animate-in-stagger > * {
+  opacity: 0;
+  animation: fade-in-up 400ms ease-out forwards;
+}
+.animate-in-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.animate-in-stagger > *:nth-child(2) { animation-delay: 50ms; }
+.animate-in-stagger > *:nth-child(3) { animation-delay: 100ms; }
+.animate-in-stagger > *:nth-child(4) { animation-delay: 150ms; }
+.animate-in-stagger > *:nth-child(5) { animation-delay: 200ms; }
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 25%,
-    rgba(249, 115, 22, 0.06) 50%,
-    transparent 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+.cursor-blink {
+  animation: blink 1s step-end infinite;
 }

@@ -1,17 +1,16 @@
 export default function Header() {
   return (
-    <header className="pt-8 pb-2 text-center">
-      <h1 className="text-5xl font-bold tracking-tight">
-        <span className="bg-gradient-to-r from-flame to-amber-400 bg-clip-text text-transparent">
-          Roast
-        </span>
-        <span className="text-neutral-100">My</span>
-        <span className="bg-gradient-to-r from-flame to-red-500 bg-clip-text text-transparent">
-          PR
-        </span>
+    <header className="pt-12 pb-4 text-center">
+      <h1
+        className="font-serif text-6xl font-normal tracking-tight not-italic"
+        style={{ textShadow: "0 0 40px rgba(249,115,22,0.15)" }}
+      >
+        <span className="text-text-accent">Roast</span>
+        <span className="text-text-primary">My</span>
+        <span className="text-text-accent">PR</span>
       </h1>
-      <p className="mt-2 text-sm text-neutral-500 italic">
-        The code reviewer that gives a damn about your users.
+      <p className="mt-3 text-[11px] uppercase tracking-[0.2em] font-mono text-text-secondary font-light">
+        The code reviewer that gives a damn about your users
       </p>
     </header>
   );

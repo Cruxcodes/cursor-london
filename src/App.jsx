@@ -8,12 +8,14 @@ export default function App() {
   const [mode, setMode] = useState("roast");
 
   return (
-    <div className="min-h-screen bg-bg text-neutral-200">
-      <Header />
-      <ModeTabBar mode={mode} setMode={setMode} />
-      <main className="max-w-7xl mx-auto px-4 pb-12">
-        {mode === "roast" ? <RoastPRMode /> : <A11yLiveMode />}
-      </main>
+    <div className="relative z-10 min-h-screen">
+      <div className="max-w-4xl mx-auto px-6 pb-16 animate-in-stagger">
+        <Header />
+        <ModeTabBar mode={mode} setMode={setMode} />
+        <main className="pt-6">
+          {mode === "roast" ? <RoastPRMode /> : <A11yLiveMode />}
+        </main>
+      </div>
     </div>
   );
 }

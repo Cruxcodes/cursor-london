@@ -15,25 +15,37 @@ const messages = [
 
 export default function LoadingState() {
   const [index, setIndex] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((i) => (i + 1) % messages.length);
-    }, 2500);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const msg = messages[index];
+    let charIndex = 0;
+    setDisplayedText("");
+    const typeInterval = setInterval(() => {
+      if (charIndex <= msg.length) {
+        setDisplayedText(msg.slice(0, charIndex));
+        charIndex++;
+      } else {
+        clearInterval(typeInterval);
+      }
+    }, 25);
+    return () => clearInterval(typeInterval);
+  }, [index]);
+
   return (
-    <div className="flex flex-col items-center justify-center py-16 space-y-6">
-      <div className="relative">
-        <div className="w-16 h-16 border-4 border-neutral-800 border-t-flame rounded-full animate-spin" />
+    <div className="py-12 font-mono text-sm">
+      <div className="flex items-center gap-2">
+        <span className="text-text-tertiary">{">"}</span>
+        <span className="text-text-secondary">{displayedText}</span>
+        <span className="text-text-accent cursor-blink">▊</span>
       </div>
-      <p
-        className="text-neutral-400 text-sm italic animate-pulse transition-all duration-500"
-        key={index}
-      >
-        {messages[index]}
-      </p>
     </div>
   );
 }

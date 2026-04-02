@@ -65,15 +65,12 @@ export default function RoastPRMode() {
 
     try {
       let diffText = diff;
-
       if (inputTab === "url") {
         diffText = await fetchGitHubDiff(githubUrl);
       }
-
       if (!diffText.trim()) {
         throw new Error("Please provide a diff to review.");
       }
-
       const result = await roastPR(diffText);
       setResults(result);
     } catch (err) {
@@ -90,72 +87,77 @@ export default function RoastPRMode() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-surface rounded-xl border border-neutral-800 overflow-hidden">
-        <div className="flex border-b border-neutral-800">
-          <button
-            onClick={() => setInputTab("paste")}
-            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors cursor-pointer ${
-              inputTab === "paste"
-                ? "text-flame border-b-2 border-flame bg-surface-light"
-                : "text-neutral-500 hover:text-neutral-300"
-            }`}
-          >
-            Paste Diff
-          </button>
-          <button
-            onClick={() => setInputTab("url")}
-            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors cursor-pointer ${
-              inputTab === "url"
-                ? "text-flame border-b-2 border-flame bg-surface-light"
-                : "text-neutral-500 hover:text-neutral-300"
-            }`}
-          >
-            GitHub URL
-          </button>
-        </div>
-
-        <div className="p-4">
-          {inputTab === "paste" ? (
-            <textarea
-              value={diff}
-              onChange={(e) => setDiff(e.target.value)}
-              placeholder="Paste your PR diff here..."
-              className="w-full h-48 bg-bg border border-neutral-800 rounded-lg p-4 font-mono text-sm text-neutral-300 placeholder-neutral-600 resize-y focus:outline-none focus:border-flame/50 focus:ring-1 focus:ring-flame/20"
-            />
-          ) : (
-            <input
-              type="url"
-              value={githubUrl}
-              onChange={(e) => setGithubUrl(e.target.value)}
-              placeholder="https://github.com/owner/repo/pull/123"
-              className="w-full bg-bg border border-neutral-800 rounded-lg px-4 py-3 font-mono text-sm text-neutral-300 placeholder-neutral-600 focus:outline-none focus:border-flame/50 focus:ring-1 focus:ring-flame/20"
-            />
-          )}
-
-          <div className="flex items-center gap-3 mt-4">
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              className="px-6 py-2.5 bg-flame hover:bg-flame-dark text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              🔥 Roast This PR
-            </button>
-            {DEMOS.map((demo, i) => (
-              <button
-                key={i}
-                onClick={() => loadDemo(i)}
-                className="px-4 py-2.5 text-sm text-neutral-500 hover:text-neutral-300 transition-colors cursor-pointer"
-              >
-                Demo: {demo.label}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Input sub-tabs */}
+      <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] font-mono">
+        <button
+          onClick={() => setInputTab("paste")}
+          className={`transition-colors duration-150 cursor-pointer ${
+            inputTab === "paste" ? "text-text-primary" : "text-text-tertiary hover:text-text-secondary"
+          }`}
+        >
+          PASTE DIFF
+        </button>
+        <span className="text-text-tertiary">/</span>
+        <button
+          onClick={() => setInputTab("url")}
+          className={`transition-colors duration-150 cursor-pointer ${
+            inputTab === "url" ? "text-text-primary" : "text-text-tertiary hover:text-text-secondary"
+          }`}
+        >
+          GITHUB URL
+        </button>
       </div>
 
+      {/* Input area */}
+      {inputTab === "paste" ? (
+        <textarea
+          value={diff}
+          onChange={(e) => setDiff(e.target.value)}
+          placeholder="Paste your PR diff here..."
+          className="w-full h-48 bg-bg-surface border-0 border-b border-border-subtle font-mono text-[13px] text-text-primary placeholder-text-tertiary placeholder:italic resize-y p-4 focus:outline-none focus:border-accent transition-colors duration-150"
+          style={{ boxShadow: diff ? "none" : undefined }}
+          onFocus={(e) => e.target.style.boxShadow = "0 2px 20px rgba(249,115,22,0.06)"}
+          onBlur={(e) => e.target.style.boxShadow = "none"}
+        />
+      ) : (
+        <input
+          type="url"
+          value={githubUrl}
+          onChange={(e) => setGithubUrl(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          placeholder="https://github.com/owner/repo/pull/123"
+          className="w-full bg-bg-surface border-0 border-b border-border-subtle font-mono text-[13px] text-text-primary placeholder-text-tertiary placeholder:italic px-4 py-3 focus:outline-none focus:border-accent transition-colors duration-150"
+          onFocus={(e) => e.target.style.boxShadow = "0 2px 20px rgba(249,115,22,0.06)"}
+          onBlur={(e) => e.target.style.boxShadow = "none"}
+        />
+      )}
+
+      {/* Actions */}
+      <div className="flex items-center gap-6">
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="px-5 py-2 bg-accent hover:bg-accent-hover text-black font-mono text-[12px] font-bold uppercase tracking-[0.1em] rounded-none transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+          style={{ borderRadius: "2px" }}
+        >
+          ROAST THIS PR
+        </button>
+        {DEMOS.map((demo, i) => (
+          <button
+            key={i}
+            onClick={() => loadDemo(i)}
+            className="font-mono text-[12px] text-text-tertiary hover:text-text-secondary transition-colors duration-150 cursor-pointer"
+          >
+            → {demo.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Error */}
       {error && (
-        <div className="bg-red-900/20 border border-red-800/50 rounded-xl p-4 text-red-400 text-sm">
-          {error}
+        <div className="border-l-[3px] border-severity-critical bg-[rgba(239,68,68,0.06)] px-4 py-3 font-mono text-[13px]">
+          <span className="text-severity-critical font-bold">ERROR: </span>
+          <span className="text-text-secondary">{error}</span>
         </div>
       )}
 

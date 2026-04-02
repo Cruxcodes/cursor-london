@@ -40,10 +40,10 @@ export default function PreviewPanel({ url, onIframeError, iframeError }) {
   const stripHeight = 60;
 
   return (
-    <div className="bg-surface rounded-xl border border-neutral-800 overflow-hidden flex flex-col">
-      <div className="px-4 py-2 border-b border-neutral-800 flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-green-500" />
-        <span className="text-xs text-neutral-500 font-mono truncate">
+    <div className="flex flex-col">
+      <div className="px-3 py-2 border-b border-border-subtle flex items-center gap-2">
+        <div className="w-1.5 h-1.5 rounded-full bg-severity-safe" />
+        <span className="text-[11px] text-text-tertiary font-mono truncate">
           {url}
         </span>
       </div>
@@ -56,11 +56,11 @@ export default function PreviewPanel({ url, onIframeError, iframeError }) {
       >
         {iframeError ? (
           <div className="flex items-center justify-center h-full p-8 text-center">
-            <div>
-              <p className="text-neutral-400 text-sm">
+            <div className="font-mono">
+              <p className="text-text-secondary text-[13px]">
                 This site blocks iframe embedding.
               </p>
-              <p className="text-neutral-500 text-xs mt-1">
+              <p className="text-text-tertiary text-[12px] mt-1">
                 Try a different URL.
               </p>
             </div>
@@ -76,7 +76,6 @@ export default function PreviewPanel({ url, onIframeError, iframeError }) {
           />
         )}
 
-        {/* Colour tint overlay */}
         {tint !== "off" && (
           <div
             className="absolute inset-0 pointer-events-none z-10"
@@ -84,41 +83,32 @@ export default function PreviewPanel({ url, onIframeError, iframeError }) {
           />
         )}
 
-        {/* Reading ruler */}
         {ruler && mouseY !== null && (
           <>
             <div
-              className="absolute inset-x-0 top-0 bg-black/40 pointer-events-none z-20 transition-all duration-75"
-              style={{ height: Math.max(0, mouseY - rulerHeight / 2) }}
+              className="absolute inset-x-0 top-0 bg-black/40 pointer-events-none z-20"
+              style={{ height: Math.max(0, mouseY - rulerHeight / 2), transition: "height 75ms ease" }}
             />
             <div
-              className="absolute inset-x-0 bottom-0 bg-black/40 pointer-events-none z-20 transition-all duration-75"
-              style={{
-                top: mouseY + rulerHeight / 2,
-              }}
+              className="absolute inset-x-0 bottom-0 bg-black/40 pointer-events-none z-20"
+              style={{ top: mouseY + rulerHeight / 2, transition: "top 75ms ease" }}
             />
             <div
-              className="absolute inset-x-0 pointer-events-none z-20 border-y border-flame/30"
-              style={{
-                top: mouseY - rulerHeight / 2,
-                height: rulerHeight,
-              }}
+              className="absolute inset-x-0 pointer-events-none z-20 border-y border-accent/30"
+              style={{ top: mouseY - rulerHeight / 2, height: rulerHeight, transition: "top 75ms ease" }}
             />
           </>
         )}
 
-        {/* Focus strip */}
         {focusStrip && mouseY !== null && (
           <>
             <div
-              className="absolute inset-x-0 top-0 bg-black/70 pointer-events-none z-20 transition-all duration-75"
-              style={{ height: Math.max(0, mouseY - stripHeight / 2) }}
+              className="absolute inset-x-0 top-0 bg-black/70 pointer-events-none z-20"
+              style={{ height: Math.max(0, mouseY - stripHeight / 2), transition: "height 75ms ease" }}
             />
             <div
-              className="absolute inset-x-0 bottom-0 bg-black/70 pointer-events-none z-20 transition-all duration-75"
-              style={{
-                top: mouseY + stripHeight / 2,
-              }}
+              className="absolute inset-x-0 bottom-0 bg-black/70 pointer-events-none z-20"
+              style={{ top: mouseY + stripHeight / 2, transition: "top 75ms ease" }}
             />
           </>
         )}
