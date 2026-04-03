@@ -178,12 +178,12 @@ export async function fetchGitHubDiff(url) {
   const [, owner, repo, pull] = match;
 
   const response = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/pulls/${pull}`,
-    { headers: { Accept: "application/vnd.github.v3.diff" } }
+    `/api/github-diff?owner=${owner}&repo=${repo}&pull=${pull}`
   );
 
   if (!response.ok) {
-    throw new Error("Couldn't fetch that PR. Try pasting the diff directly.");
+    const body = await response.json().catch(() => ({}));
+    throw new Error(body.error || "Couldn't fetch that PR. Try pasting the diff directly.");
   }
 
   return response.text();
