@@ -2,7 +2,7 @@
 
 **The code reviewer that gives a damn about your users.**
 
-RoastMyPR is an AI-powered code review and accessibility auditing tool that uses Claude (Anthropic) to deliver brutally honest, funny, and genuinely expert feedback on your pull requests and live websites. It catches bugs, security flaws, and accessibility violations — all with a side of snark.
+RoastMyPR is an AI-powered code review and accessibility auditing tool that uses Claude (Anthropic) to deliver brutally honest, funny, and genuinely expert feedback on your pull requests and live websites. It catches bugs, security flaws, and accessibility violations, all with a side of snark.
 
 ![RoastMyPR Homepage](https://github.com/user-attachments/assets/402c1f59-1dc4-4930-bbd5-05dfd62324a6)
 
@@ -75,45 +75,6 @@ The live site preview panel includes interactive overlay controls:
 
 ---
 
-## 📁 Project Structure
-
-```
-cursor-london/
-├── api/                        # Vercel serverless functions
-│   ├── proxy.js                # Proxies webpage HTML for a11y analysis
-│   └── github-diff.js          # Fetches GitHub PR diffs via the API
-├── public/
-│   ├── favicon.svg
-│   └── icons.svg
-├── src/
-│   ├── api.js                  # Anthropic API calls & GitHub/proxy fetch helpers
-│   ├── App.jsx                 # Root app with mode switching (Roast PR / Test Live Site)
-│   ├── main.jsx                # React entry point
-│   ├── index.css               # Global styles, theme variables, animations
-│   ├── assets/
-│   │   └── hero.png
-│   └── components/
-│       ├── Header.jsx           # App title and tagline
-│       ├── ModeTabBar.jsx       # Top-level tab switcher
-│       ├── RoastPRMode.jsx      # Paste diff / GitHub URL input + demo diffs
-│       ├── RoastResults.jsx     # Score banner + tabbed code review / a11y findings
-│       ├── ScoreBanner.jsx      # Large score display with emoji and roast summary
-│       ├── FindingCard.jsx      # Expandable issue card (severity, file, fix, roast)
-│       ├── A11yLiveMode.jsx     # URL input + live site analysis orchestrator
-│       ├── A11yFindingsPanel.jsx # A11y score, dyslexia report, and findings list
-│       ├── PreviewPanel.jsx     # Iframe preview with tint/ruler/focus overlays
-│       ├── OverlayControls.jsx  # Colour tint, opacity, ruler, and focus strip controls
-│       ├── ReadabilityPreview.jsx # Original vs. dyslexia-friendly text comparison
-│       ├── SimulationBar.jsx    # Disability simulation toggles (dyslexia, low vision, color blind)
-│       └── LoadingState.jsx     # Typewriter-style loading messages with snarky quips
-├── vercel.json                 # Vercel route rewrites for the proxy API
-├── vite.config.js              # Vite config with React, Tailwind, and local API proxy
-├── package.json
-└── eslint.config.js
-```
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -151,46 +112,6 @@ npm run dev
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 The Vite dev server includes local API proxy middleware for `/api/proxy` and `/api/github-diff`, so everything works out of the box during development.
-
-### Build for Production
-
-```bash
-npm run build
-npm run preview
-```
-
-### Linting
-
-```bash
-npm run lint
-```
-
----
-
-## 🚢 Deployment
-
-The app is configured for **Vercel** deployment out of the box:
-
-1. Push the repository to GitHub.
-2. Import it in [Vercel](https://vercel.com).
-3. Add environment variables (`VITE_ANTHROPIC_API_KEY`, optionally `GITHUB_TOKEN`) in the Vercel dashboard.
-4. Deploy — the serverless functions in `api/` are automatically picked up.
-
-The `vercel.json` handles route rewrites for the proxy API endpoint.
-
----
-
-## 🎨 Design
-
-RoastMyPR features a dark, terminal-inspired aesthetic with:
-
-- A deep dark background with subtle noise texture and an orange radial glow
-- Orange accent colour (`#f97316`) throughout
-- JetBrains Mono for all monospace text
-- Instrument Serif for display headings
-- Staggered fade-in animations on page load
-- A blinking terminal cursor during loading states
-- Colour-coded severity indicators (red for critical, amber for warning, blue for info, green for safe)
 
 ---
 
